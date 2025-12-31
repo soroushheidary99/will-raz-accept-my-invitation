@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del \"d:\\Archived Projects\\mapInteraction\\asd\")"
+    ]
+  }
+}

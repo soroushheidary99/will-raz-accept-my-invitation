@@ -1,0 +1,307 @@
+/* ========================================
+   Animated Clock - Day/Night Theme
+   ======================================== */
+
+.animated-clock {
+    --ease: cubic-bezier(.4, -0.3, .6, 1.3);
+    --transition-duration: 0.75s;
+
+    /* Day colors */
+    --clr-day-sky: #4da6e8;
+    --clr-sun: #FCE570;
+    --clr-sun-light: #ffffe3;
+
+    /* Night colors */
+    --clr-night-sky: #070b34;
+    --clr-moon: hsl(212, 13%, 75%);
+    --clr-moon-crater: #c5c5c5;
+
+    /* Clock sizing */
+    --clock-size: 220px;
+    --celestial-size: 75px;
+}
+
+/* Clock Scene Container */
+.clock-scene {
+    position: relative;
+    width: var(--clock-size);
+    height: var(--clock-size);
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background-color: var(--clr-day-sky);
+    overflow: hidden;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.15),
+        inset 0 4px 15px rgba(255, 255, 255, 0.2);
+    transition: background-color var(--transition-duration) var(--ease);
+    cursor: pointer;
+}
+
+.clock-scene[data-period="PM"] {
+    background-color: var(--clr-night-sky);
+}
+
+/* Stars Canvas */
+.stars-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity var(--transition-duration) ease;
+    pointer-events: none;
+}
+
+.clock-scene[data-period="PM"] .stars-canvas {
+    opacity: 1;
+}
+
+/* Celestial Body (Sun/Moon) */
+.celestial-body {
+    position: absolute;
+    width: var(--celestial-size);
+    height: var(--celestial-size);
+    border-radius: 50%;
+    z-index: 2;
+    cursor: pointer;
+    /* Arc path - curves upward through center */
+    offset-path: path('M -30,150 Q 110,35 250,150');
+    offset-rotate: 0deg;
+    transition: offset-distance var(--transition-duration) var(--ease),
+                opacity var(--transition-duration) ease;
+}
+
+/* Sun Styles */
+.celestial-body.sun {
+    background: radial-gradient(circle at 30% 30%, var(--clr-sun-light), var(--clr-sun));
+    box-shadow:
+        0 0 0 10px rgba(252, 229, 112, 0.3),
+        0 0 0 20px rgba(252, 229, 112, 0.2),
+        0 0 0 30px rgba(252, 229, 112, 0.1),
+        0 0 20px 5px rgba(255, 255, 255, 0.5);
+    offset-distance: 50%;
+    opacity: 1;
+}
+
+/* Sun exits to the right along the arc when PM */
+.clock-scene[data-period="PM"] .celestial-body.sun {
+    offset-distance: 100%;
+    opacity: 0;
+}
+
+/* Moon Styles */
+.celestial-body.moon {
+    background: radial-gradient(circle at 30% 30%, #eee, var(--clr-moon));
+    box-shadow:
+        0 0 0 10px rgba(255, 255, 255, 0.1),
+        0 0 0 20px rgba(255, 255, 255, 0.05),
+        0 0 15px 2px rgba(255, 255, 255, 0.3);
+    offset-distance: 0%;
+    opacity: 0;
+}
+
+/* Moon enters from the left along the arc when PM */
+.clock-scene[data-period="PM"] .celestial-body.moon {
+    offset-distance: 50%;
+    opacity: 1;
+}
+
+/* Moon craters */
+.celestial-body.moon::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--clr-moon-crater);
+    border-radius: 50%;
+    top: 35%;
+    left: 25%;
+    opacity: 0.6;
+    box-shadow:
+        20px 10px 0 -3px var(--clr-moon-crater),
+        5px -15px 0 -5px var(--clr-moon-crater);
+}
+
+/* Clouds */
+.clouds {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    pointer-events: none;
+    transition: all var(--transition-duration) ease;
+}
+
+.clouds::before,
+.clouds::after {
+    content: '';
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transition: all var(--transition-duration) ease;
+}
+
+/* Cloud layer 1 - bottom right */
+.clouds::before {
+    width: 70px;
+    height: 70px;
+    right: 10px;
+    bottom: -15px;
+    box-shadow:
+        -30px 5px 0 10px rgba(255, 255, 255, 0.9),
+        -55px 10px 0 5px rgba(255, 255, 255, 0.9),
+        -80px 5px 0 15px rgba(255, 255, 255, 0.9);
+}
+
+/* Cloud layer 2 - bottom left */
+.clouds::after {
+    width: 60px;
+    height: 60px;
+    left: 5px;
+    bottom: -10px;
+    box-shadow:
+        25px 5px 0 10px rgba(255, 255, 255, 0.9),
+        55px 0px 0 5px rgba(255, 255, 255, 0.9);
+}
+
+/* Clouds hidden in night mode */
+.clock-scene[data-period="PM"] .clouds::before {
+    right: -100px;
+    bottom: -50px;
+    opacity: 0;
+}
+
+.clock-scene[data-period="PM"] .clouds::after {
+    left: -100px;
+    bottom: -50px;
+    opacity: 0;
+}
+
+/* Clock Hands Container */
+.clock-hands {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+/* Hour Markers */
+.hour-markers-animated {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hour-marker-animated {
+    position: absolute;
+    width: 2px;
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.4);
+    left: 50%;
+    top: 10px;
+    transform-origin: 50% calc(var(--clock-size) / 2 - 10px);
+    border-radius: 1px;
+    transition: background-color var(--transition-duration) ease;
+}
+
+.hour-marker-animated.major {
+    height: 10px;
+    width: 2px;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.clock-scene[data-period="PM"] .hour-marker-animated {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.clock-scene[data-period="PM"] .hour-marker-animated.major {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Clock Hands */
+.animated-clock-hand {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform-origin: 50% 100%;
+    border-radius: 2px;
+    transition:
+        transform 0.1s ease-out,
+        background-color var(--transition-duration) ease;
+}
+
+.animated-hour-hand {
+    width: 3px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    margin-left: -1.5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.animated-minute-hand {
+    width: 2px;
+    height: 55px;
+    background-color: rgba(0, 0, 0, 0.6);
+    margin-left: -1px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Night mode - white hands */
+.clock-scene[data-period="PM"] .animated-hour-hand {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.clock-scene[data-period="PM"] .animated-minute-hand {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Active hand state */
+.animated-clock-hand.active {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+/* Center dot */
+.clock-center-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    z-index: 11;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    transition: background-color var(--transition-duration) ease;
+}
+
+.clock-scene[data-period="PM"] .clock-center-dot {
+    background-color: #fff;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .animated-clock {
+        --clock-size: 180px;
+        --celestial-size: 60px;
+    }
+
+    .animated-hour-hand {
+        height: 35px;
+    }
+
+    .animated-minute-hand {
+        height: 45px;
+    }
+}

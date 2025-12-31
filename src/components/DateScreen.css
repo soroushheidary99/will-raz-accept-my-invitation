@@ -1,0 +1,546 @@
+/* ========================================
+   Date Screen - Clean Layout
+   ======================================== */
+
+/* Desktop: column layout - content, timeline, content */
+.date-screen-content {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 0;
+    max-height: 100%;
+    box-sizing: border-box;
+}
+
+/* Content wrapper (contains header + footer) */
+.date-content {
+    display: contents;
+}
+
+/* Header: title and subtitle */
+.date-header {
+    text-align: center;
+    padding: 0 2rem 1.5rem;
+    order: -1;
+}
+
+.date-header .screen-subtitle {
+    margin-bottom: 0;
+}
+
+/* Footer: message, selection, button */
+.date-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem 0;
+}
+
+/* ========================================
+   Scroll Container - Desktop (full width horizontal)
+   ======================================== */
+.date-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-light) transparent;
+    cursor: grab;
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        black 3%,
+        black 97%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        black 3%,
+        black 97%,
+        transparent 100%
+    );
+}
+
+.date-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.date-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.date-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--accent-light);
+    border-radius: 3px;
+}
+
+/* Timeline: horizontal row of date cards */
+.date-timeline {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 1.5rem 6%;
+    width: max-content;
+    min-width: 100%;
+    justify-content: center;
+}
+
+/* ========================================
+   Date Node Card
+   ======================================== */
+.timeline-node {
+    display: flex;
+    max-height: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 1.5rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+    min-width: 100px;
+    position: relative;
+    background: transparent;
+}
+
+.timeline-node:hover {
+    background-color: var(--bg-secondary);
+    transform: translateY(-6px);
+}
+
+.timeline-node.selected {
+    background-color: var(--accent);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px var(--shadow);
+}
+
+/* Today label badge */
+.today-label {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background-color: var(--bg-primary);
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 2px solid var(--accent);
+    white-space: nowrap;
+}
+
+.timeline-node.selected .today-label {
+    background-color: white;
+    color: var(--accent);
+    border-color: white;
+}
+
+/* Dot indicator */
+.node-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    border: 3px solid var(--accent-light);
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.timeline-node:hover .node-dot {
+    background-color: var(--accent-light);
+    transform: scale(1.15);
+}
+
+.timeline-node.selected .node-dot {
+    background-color: white;
+    border-color: white;
+    transform: scale(1.3);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
+}
+
+.timeline-node.today .node-dot {
+    border-width: 4px;
+    border-color: var(--accent);
+}
+
+/* Date content */
+.node-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.node-day {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.node-date {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.node-month {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-top: 0.25rem;
+}
+
+.timeline-node.selected .node-day,
+.timeline-node.selected .node-date,
+.timeline-node.selected .node-month {
+    color: white;
+}
+
+/* ========================================
+   Blurred Past/Future Nodes
+   ======================================== */
+.timeline-node.past-node,
+.timeline-node.future-node {
+    opacity: 0.35;
+    filter: blur(2px);
+}
+
+.timeline-node.past-node:hover,
+.timeline-node.future-node:hover {
+    opacity: 0.5;
+    filter: blur(1px);
+    transform: none;
+    background: transparent;
+}
+
+.timeline-node.past-node .node-dot,
+.timeline-node.future-node .node-dot {
+    border-color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+/* ========================================
+   Unavailable Nodes
+   ======================================== */
+.timeline-node.unavailable-node {
+    opacity: 0.45;
+    position: relative;
+}
+
+.timeline-node.unavailable-node::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background-color: var(--accent);
+    transform: rotate(-5deg);
+    opacity: 0.7;
+}
+
+.timeline-node.unavailable-node:hover {
+    opacity: 0.6;
+    transform: none;
+    background: transparent;
+}
+
+.timeline-node.unavailable-node .node-dot {
+    border-color: var(--text-secondary);
+}
+
+.timeline-node.unavailable-node .node-day,
+.timeline-node.unavailable-node .node-date,
+.timeline-node.unavailable-node .node-month {
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Snackbar Overlay
+   ======================================== */
+.snackbar-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.snackbar-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.snackbar-message {
+    transform: scale(0.9) translateY(10px);
+    transition: transform 0.3s ease;
+}
+
+.snackbar-overlay.visible .snackbar-message {
+    transform: scale(1) translateY(0);
+}
+
+.snackbar-message p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: white;
+    text-align: center;
+    padding: 1rem 2rem;
+    background-color: var(--accent);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.snackbar-message.past p,
+.snackbar-message.future p,
+.snackbar-message.unavailable p {
+    background-color: var(--accent);
+}
+
+/* ========================================
+   Selected Date Display
+   ======================================== */
+.selected-date-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selected-day {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+}
+
+.selected-full {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* ========================================
+   Mobile: Side-by-side layout
+   Timeline left (full height), content right
+   ======================================== */
+@media (max-width: 768px) {
+    .date-screen-content {
+        flex-direction: row;
+        padding: 0;
+        height: 100%;
+        min-height: unset;
+    }
+
+    /* Timeline: 50% width on left */
+    .date-scroll-container {
+        width: 40%;
+        min-width: 40%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        flex-shrink: 0;
+        cursor: default;
+        scrollbar-width: none;
+        scrollbar-color: transparent transparent;
+    }
+
+    .date-timeline {
+        flex-direction: column;
+        padding: 4rem 1rem;
+        gap: 0.5rem;
+        width: 100%;
+        min-width: unset;
+        justify-content: flex-start;
+    }
+
+    /* Date node: horizontal row layout */
+    .timeline-node {
+        flex-direction: row;
+        align-items: center;
+        min-width: unset;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        gap: 1rem;
+        border-radius: 16px;
+    }
+
+    .timeline-node:hover {
+        transform: translateX(4px);
+    }
+
+    .timeline-node.selected {
+        transform: translateX(4px);
+    }
+
+    .today-label {
+        position: absolute;
+        top: 50%;
+        left: -8px;
+        transform: translateY(-50%) rotate(-90deg);
+        font-size: 0.6rem;
+        padding: 3px 8px;
+        border-radius: 6px;
+    }
+
+    .node-dot {
+        width: 14px;
+        height: 14px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        border-width: 3px;
+    }
+
+    .timeline-node.today .node-dot {
+        display: none;
+    }
+
+    .node-content {
+        align-items: flex-start;
+    }
+
+    .node-content.ml-2 {
+        margin-left: 1.5rem;
+    }
+
+    .node-day {
+        font-size: 0.75rem;
+        margin-bottom: 0.15rem;
+    }
+
+    .node-date {
+        font-size: 2rem;
+    }
+
+    .node-month {
+        font-size: 0.7rem;
+        margin-top: 0.1rem;
+    }
+
+    /* Content wrapper: stacks header + footer on right */
+    .date-content {
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        justify-content: space-between;
+        padding: 3rem 1.5rem;
+        gap: 0;
+        position: relative;
+    }
+
+    .date-header {
+        text-align: center;
+        padding: 0;
+        order: 0;
+    }
+
+    .date-header .screen-title {
+        font-size: 1.6rem;
+    }
+
+    .date-header .screen-subtitle {
+        display: none;
+    }
+
+    .date-footer {
+        display: contents;
+    }
+
+    .selected-date-display {
+        align-items: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .selected-day {
+        font-size: 0.75rem;
+    }
+
+    .selected-full {
+        font-size: 2rem;
+    }
+
+    .date-footer .btn {
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .date-scroll-container {
+        width: 50%;
+        min-width: 50%;
+    }
+
+    .date-timeline {
+        padding: 3.5rem 0.75rem;
+        gap: 0.4rem;
+    }
+
+    .timeline-node {
+        padding: 0.85rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .node-day {
+        font-size: 0.65rem;
+    }
+
+    .node-date {
+        font-size: 1.75rem;
+    }
+
+    .node-month {
+        font-size: 0.6rem;
+    }
+
+    .date-content {
+        padding: 2rem 1rem;
+    }
+
+    .date-header .screen-title {
+        font-size: 1.4rem;
+    }
+
+    .selected-day {
+        font-size: 0.65rem;
+    }
+
+    .selected-full {
+        font-size: 1.75rem;
+    }
+
+    .snackbar-message p {
+        font-size: 1.1rem;
+        padding: 0.75rem 1.5rem;
+    }
+}
