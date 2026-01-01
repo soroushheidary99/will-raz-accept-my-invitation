@@ -3,7 +3,12 @@ import './DateScreen.css';
 
 // Hardcoded unavailable dates (YYYY-MM-DD format)
 const UNAVAILABLE_DATES = [
-    '2025-12-23',
+    '2026-1-1',
+    '2026-1-2',
+    '2026-1-3',
+    '2026-1-4',
+    '2026-1-5',
+    '2026-1-6',
 ];
 
 const DateScreen = ({ onNext, isActive }) => {
@@ -50,7 +55,7 @@ const DateScreen = ({ onNext, isActive }) => {
 
         // Today + 11 future days (valid selection range = 12 days total)
         let validIdx = 0;
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 30; i++) {
             const date = new Date(today);
             date.setDate(today.getDate() + i);
             const unavailable = isDateUnavailable(date);
