@@ -148,6 +148,18 @@ h1, h2, h3 {
     animation-delay: 0.6s;
 }
 
+.intro-subtitle-small {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.6s;
+}
+
 .intro-buttons {
     display: flex;
     gap: 1rem;
@@ -852,6 +864,10 @@ h1, h2, h3 {
 
     .intro-subtitle {
         font-size: 1.25rem;
+    }
+
+    .intro-subtitle-small {
+        font-size: 0.7rem;
     }
 
     .screen-title {

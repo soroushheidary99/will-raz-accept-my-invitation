@@ -42,8 +42,9 @@ const IntroScreen = ({ onNext, isActive }) => {
             className={`screen ${isActive ? 'active' : ''}`}
         >
             <div className="screen-content">
-                <h1 className="intro-title">Raha The Cute...</h1>
-                <p className="intro-subtitle">Will you accept my invitation to a cup of coffee?</p>
+                <h1 className="intro-title">Raz The Cute...</h1>
+                <p className="intro-subtitle">Voudrais-tu partager un petit café avec moi ? ☕</p>
+                <p className="intro-subtitle-small">I have no idea what that means :/ AI said it's cute</p>
                 <div className="intro-buttons">
                     <button className="btn btn-primary" id="btn-start" onClick={onNext}>
                         <span>I'm listening</span>
